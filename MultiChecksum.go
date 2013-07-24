@@ -1,0 +1,68 @@
+// MultiChecksum - an implementation in go to show multiple checksums for given files
+//
+// fw@snurn.de
+//
+
+package main
+
+// Import needed packages
+import (
+    "fmt"
+    "os"
+    "io"
+    "io/ioutil"
+    "crypto/md5"
+    "crypto/sha1"
+    "crypto/sha256"
+    "crypto/sha512"
+)
+
+// loader - returns the content of a given file as []byte
+// takes a string (the filename of the file to read) as argument
+// returns a []byte (content of file) and error
+func loader(filename string) (content []byte, err error) {
+    content, err = ioutil.ReadFile(filename)
+    if err != nil {
+         return nil, err
+    }
+    return content, nil
+}
+
+// generate and print checksum for each file
+// takes a string (filename) as argument
+// prints different kinds of checksums for file
+func printSums(filename string) () {
+    // call 'loader' to load the file and return it's content as []byte
+    content, err := loader(filename)
+    if err != nil {
+         fmt.Printf("Error: %v\n", err)
+	 os.Exit(1)
+    }
+    // generate handles for all our kinds of checksums
+    md5    := md5.New()
+    sha1   := sha1.New()
+    sha256 := sha256.New()
+    sha512 := sha512.New()
+    // create a MultiWriter to write to all handles at once
+    w := io.MultiWriter(md5, sha1, sha256, sha512)
+    // write (file) content to our MultiWriter (w)
+    w.Write(content)
+    // print out checksums
+    fmt.Printf("Checksums for %s:\n", filename);
+    fmt.Printf("MD5    ("+ filename +"): %x\n", md5.Sum(nil) )
+    fmt.Printf("SHA1   ("+ filename +"): %x\n", sha1.Sum(nil) )
+    fmt.Printf("SHA256 ("+ filename +"): %x\n", sha256.Sum(nil) )
+    fmt.Printf("SHA512 ("+ filename +"): %x\n", sha512.Sum(nil) )
+}
+
+func main() {
+    // get command line arguments (without our own name)
+    args := os.Args[1:]
+    // print how many files we where given
+    fmt.Println("Number of Files given: ", len(args)  )
+    // iterate over arguments given and call printSums for each filename
+    for i := 0; i<len(args); i++ {
+	filename := args[i]
+	printSums(filename)
+    }
+}
