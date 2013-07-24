@@ -3,7 +3,10 @@ MultiChecksum
 
 a tool implemented in go, to show multiple checksums for given file(s).
 
-Usage:
+Usage
+=====
+
+The tool takes files as arguments and prints MD5, SHA1, SHA2 and SHA5, like shown in the example below.
 
 <pre>
 nyx:MultiChecksum flow$ MultiChecksum README.md 
@@ -14,3 +17,5 @@ SHA1   (README.md): fda7a80f2b7420b50a319a42c77213f3b5502ba2
 SHA256 (README.md): 741a117a6d7cbec6cb1fb9f7f9816ff8d3569a9de7a81cab24dd73f4a4e52cb9
 SHA512 (README.md): 38fa4bb1f7548aea3e892daebba888a55d5e0950f29ee92c80b6f222551ad150865a29e55490b894258f1f713d57e12d93f04eb17ef3a784560d6fea78e4da1f
 </pre>
+
+Note: MultiChecksum allows to be given more than one filename as commandline argument.
