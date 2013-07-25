@@ -8,6 +8,11 @@ MultiChecksum runs on the following operating systems and platforms.
 Operating Systems supported: Windows, Linux, FreeBSD, NetBSD, OpenBSD, Mac OS X
 Platforms supported: i386, amd64, arm 
 
+Requirements
+============
+
+You need to have go installed on your machine. For more informtion about go check out http://www.golang.org/
+
 Download
 ========
 
