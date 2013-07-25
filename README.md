@@ -25,8 +25,14 @@ or you can download the source as a ZIP Archive from:
 
  https://github.com/scusi/MultiChecksum/archive/master.zip
 
+and unpack it into any local directory
+
+ unzip -e master.zip
+
 Install
 =======
+
+After download you change into the new MultiChecksum directory and call _go install_
 
 <pre>
  cd MultiChecksum
