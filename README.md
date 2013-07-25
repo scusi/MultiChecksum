@@ -6,14 +6,17 @@ a tool implemented in go, to show multiple checksums for given file(s).
 Download
 ========
 
+<pre>
  git clone https://github.com/scusi/MultiChecksum.git
+</pre>
 
 Install
 =======
 
+<pre>
  cd MultiChecksum
  go install
-
+</pre>
 Usage
 =====
 
