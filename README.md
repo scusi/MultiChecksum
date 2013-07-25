@@ -3,6 +3,17 @@ MultiChecksum
 
 a tool implemented in go, to show multiple checksums for given file(s).
 
+Download
+========
+
+ git clone https://github.com/scusi/MultiChecksum.git
+
+Install
+=======
+
+ cd MultiChecksum
+ go install
+
 Usage
 =====
 
