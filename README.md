@@ -16,9 +16,14 @@ You need to have go installed on your machine. For more informtion about go chec
 Download
 ========
 
+You can clone the source using git
 <pre>
  git clone https://github.com/scusi/MultiChecksum.git
 </pre>
+
+or you can download the source as a ZIP Archive from:
+
+ https://github.com/scusi/MultiChecksum/archive/master.zip
 
 Install
 =======
