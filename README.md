@@ -2,6 +2,11 @@ MultiChecksum
 =============
 
 a tool implemented in go, to show multiple checksums for given file(s).
+Currently MultiChecksum can generate MD5, SHA1, SHA2 and SHA5.
+
+MultiChecksum runs on the following operating systems and platforms.
+Operating Systems supported: Windows, Linux, FreeBSD, NetBSD, OpenBSD, Mac OS X
+Platforms supported: i386, amd64, arm 
 
 Download
 ========
