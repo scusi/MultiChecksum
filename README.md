@@ -54,3 +54,8 @@ SHA512 (README.md): 38fa4bb1f7548aea3e892daebba888a55d5e0950f29ee92c80b6f222551a
 </pre>
 
 Note: MultiChecksum allows to be given more than one filename as commandline argument.
+
+Webapp
+======
+
+There is also a Webapp variant for docker of _MultiChecksum_ available from https://github.com/scusi/MultiChecksumWeb

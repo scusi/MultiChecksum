@@ -1,8 +1,7 @@
-// MultiChecksum - an implementation in go to show multiple checksums for given files
+// MultiChecksum is an implementation in go to show multiple checksums for given files
 //
-// fw@snurn.de
+// Author: fw@snurn.de
 //
-
 package main
 
 // Import needed packages
