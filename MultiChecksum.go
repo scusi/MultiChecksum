@@ -20,6 +20,10 @@ import (
 // takes a string (the filename of the file to read) as argument
 // returns a []byte (content of file) and error
 func loader(filename string) (content []byte, err error) {
+// TODO: Reading content entierly into memory does not work in cases 
+// - where the content is larger than the available memory
+// - when there is a restriction on maximum available memory for the process
+// This could be overcome by streaming the content into the MultiWriter in func PrintSums
     content, err = ioutil.ReadFile(filename)
     if err != nil {
          return nil, err
