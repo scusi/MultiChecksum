@@ -2,7 +2,7 @@ MultiChecksum
 =============
 
 a tool implemented in go, to show multiple checksums for given file(s).
-Currently MultiChecksum can generate MD5, SHA1, SHA2 and SHA5.
+Currently MultiChecksum can generate MD5, SHA1, SHA2, SHA5 and Blake2.
 
 MultiChecksum runs on the following operating systems and platforms.
 Operating Systems supported: Windows, Linux, FreeBSD, NetBSD, OpenBSD, Mac OS X
@@ -41,7 +41,8 @@ After download you change into the new MultiChecksum directory and call _go inst
 Usage
 =====
 
-The tool takes files as arguments and prints MD5, SHA1, SHA2 and SHA5, like shown in the example below.
+The tool takes files as arguments and prints MD5, SHA1, SHA2, SHA5, Blake2s and Blake2b checksums 
+like shown in the example below.
 
 <pre>
 nyx:MultiChecksum flow$ MultiChecksum doc.go 
