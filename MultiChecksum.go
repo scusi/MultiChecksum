@@ -54,11 +54,18 @@ func printSums(filename string) () {
     w.Write(content)
     // print out checksums
     fmt.Printf("Checksums for %s:\n", filename);
+<<<<<<< HEAD
     fmt.Printf("MD5    ("+ filename +"): %x\n", md5.Sum(nil) )
     fmt.Printf("SHA1   ("+ filename +"): %x\n", sha1.Sum(nil) )
     fmt.Printf("SHA256 ("+ filename +"): %x\n", sha256.Sum(nil) )
     fmt.Printf("SHA512 ("+ filename +"): %x\n", sha512.Sum(nil) )
     fmt.Printf("Blake  ("+ filename +"): %x\n", blake.Sum(nil) )
+=======
+	fmt.Printf("MD5    (%s): %x\n", filename, md5.Sum(nil) )
+	fmt.Printf("SHA1   (%s): %x\n", filename, sha1.Sum(nil) )
+	fmt.Printf("SHA256 (%s): %x\n", filename, sha256.Sum(nil) )
+	fmt.Printf("SHA512 (%s): %x\n", filename, sha512.Sum(nil) )
+>>>>>>> bce566a4c35eafad6897a0e447f3ced82a668697
 }
 
 func main() {
