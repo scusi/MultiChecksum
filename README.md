@@ -44,13 +44,15 @@ Usage
 The tool takes files as arguments and prints MD5, SHA1, SHA2 and SHA5, like shown in the example below.
 
 <pre>
-nyx:MultiChecksum flow$ MultiChecksum README.md 
+nyx:MultiChecksum flow$ MultiChecksum doc.go 
 Number of Files given:  1
-Checksums for README.md:
-MD5    (README.md): 0936beea77781d50a6d691624efb1278
-SHA1   (README.md): fda7a80f2b7420b50a319a42c77213f3b5502ba2
-SHA256 (README.md): 741a117a6d7cbec6cb1fb9f7f9816ff8d3569a9de7a81cab24dd73f4a4e52cb9
-SHA512 (README.md): 38fa4bb1f7548aea3e892daebba888a55d5e0950f29ee92c80b6f222551ad150865a29e55490b894258f1f713d57e12d93f04eb17ef3a784560d6fea78e4da1f
+Checksums for doc.go:
+MD5     (doc.go): 4773d77cc5299500ea5c3c9c0201bc4c
+SHA1    (doc.go): 894466465df48d3fba5508cc8480a12abfed6920
+SHA256  (doc.go): 6a8b25c0c9195c5fddf74ee7bad56306082c9027fae366bc73801f71e2e150e5
+SHA512  (doc.go): fa18a57cac11b9c816c7c44b99787255d16253c6bb1b08f6154386e929b8ef7f1d7156fc6699ed7fd9bc4a4dbf95421597a790d34837948651761ec72dfca4ad
+Blake2s (doc.go): 03371343e73bf58702388ae9e6aa9c38678b95fab8140169553f70f52a110165
+Blake2b (doc.go): 774a991d33cf75e05a5b9536d15557586ecb3c116da0a16f1f5a352f175ee44d
 </pre>
 
 Note: MultiChecksum allows to be given more than one filename as commandline argument.
