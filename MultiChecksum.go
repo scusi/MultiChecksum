@@ -14,6 +14,7 @@ import (
     "crypto/sha1"
     "crypto/sha256"
     "crypto/sha512"
+    "github.com/dchest/blake2s"
 )
 
 // loader - returns the content of a given file as []byte
@@ -46,8 +47,9 @@ func printSums(filename string) () {
     sha1   := sha1.New()
     sha256 := sha256.New()
     sha512 := sha512.New()
+    blake  := blake2s.New256()
     // create a MultiWriter to write to all handles at once
-    w := io.MultiWriter(md5, sha1, sha256, sha512)
+    w := io.MultiWriter(md5, sha1, sha256, sha512, blake)
     // write (file) content to our MultiWriter (w)
     w.Write(content)
     // print out checksums
@@ -56,6 +58,7 @@ func printSums(filename string) () {
     fmt.Printf("SHA1   ("+ filename +"): %x\n", sha1.Sum(nil) )
     fmt.Printf("SHA256 ("+ filename +"): %x\n", sha256.Sum(nil) )
     fmt.Printf("SHA512 ("+ filename +"): %x\n", sha512.Sum(nil) )
+    fmt.Printf("Blake  ("+ filename +"): %x\n", blake.Sum(nil) )
 }
 
 func main() {
