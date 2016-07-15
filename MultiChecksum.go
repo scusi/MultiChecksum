@@ -54,7 +54,11 @@ func printSums(filename string) {
 	// create a MultiWriter to write to all handles at once
 	w := io.MultiWriter(md5, sha1, sha256, sha512, blake2s, blake2b2, blake2b5)
 	// write (file) content to our MultiWriter (w)
-	w.Write(content)
+	_, err = w.Write(content)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
 	// print out checksums
 	fmt.Printf("Checksums for %s:\n", filename)
 	fmt.Printf("MD5      (%s): %x\n", filename, md5.Sum(nil))
