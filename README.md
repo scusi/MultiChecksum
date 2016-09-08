@@ -38,3 +38,34 @@ The stand alone variant is under `cmd/MultiChecksumNoLib/`. This is a
 command line tool that does the job, no library required.
 
 This is basically the first version of MultiChecksum
+
+Fetch
+=====
+
+```
+go get github.com/scusi/MultiChecksum
+```
+
+Install
+=======
+
+```
+# Install the lib
+cd ${GOPATH}/src/github.com/scusi/MultiChecksum
+go install
+
+# Install the commandline app
+cd ${GOPATH}/src/github.com/scusi/MultiChecksum/cmd/MultiChecksum/
+go install MultiChecksum.go
+```
+
+Run
+===
+
+After installing the commandline app you should be able to execute
+
+```
+MultiChecksum file1.bin file2.bin anotherFile.doc
+```
+
+
