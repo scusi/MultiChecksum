@@ -49,19 +49,21 @@ func printSums(filename string) () {
     sha256 := sha256.New()
     sha512 := sha512.New()
     blake2s := blake2s.New256()
-    blake2b := blake2b.New256()
+    blake2b2 := blake2b.New256()
+    blake2b5 := blake2b.New512()
     // create a MultiWriter to write to all handles at once
-    w := io.MultiWriter(md5, sha1, sha256, sha512, blake2s, blake2b)
+    w := io.MultiWriter(md5, sha1, sha256, sha512, blake2s, blake2b2, blake2b5)
     // write (file) content to our MultiWriter (w)
     w.Write(content)
     // print out checksums
     fmt.Printf("Checksums for %s:\n", filename);
-	fmt.Printf("MD5     (%s): %x\n", filename, md5.Sum(nil) )
-	fmt.Printf("SHA1    (%s): %x\n", filename, sha1.Sum(nil) )
-	fmt.Printf("SHA256  (%s): %x\n", filename, sha256.Sum(nil) )
-	fmt.Printf("SHA512  (%s): %x\n", filename, sha512.Sum(nil) )
-    fmt.Printf("Blake2s (%s): %x\n", filename, blake2s.Sum(nil) )
-    fmt.Printf("Blake2b (%s): %x\n", filename, blake2b.Sum(nil) )
+	fmt.Printf("MD5      (%s): %x\n", filename, md5.Sum(nil) )
+	fmt.Printf("SHA1     (%s): %x\n", filename, sha1.Sum(nil) )
+	fmt.Printf("SHA256   (%s): %x\n", filename, sha256.Sum(nil) )
+    fmt.Printf("Blake2s  (%s): %x\n", filename, blake2s.Sum(nil) )
+    fmt.Printf("Blake2b2 (%s): %x\n", filename, blake2b2.Sum(nil) )
+    fmt.Printf("Blake2b5 (%s): %x\n", filename, blake2b5.Sum(nil) )
+	fmt.Printf("SHA512   (%s): %x\n", filename, sha512.Sum(nil) )
 }
 
 func main() {
