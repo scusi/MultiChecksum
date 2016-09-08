@@ -10,6 +10,8 @@
 package multichecksum
 
 import (
+	"bufio"
+	"bytes"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
@@ -51,4 +53,29 @@ func CalcChecksums(filename string, data []byte) *Checksums {
 	chksums := Checksums(sums)
 	// return a Checksums datatype map with the result sums
 	return &chksums
+}
+
+func (cs *Checksums) String() string {
+	var outbuf bytes.Buffer
+	w := bufio.NewWriter(&outbuf)
+	for typ, sum := range *cs {
+		if typ == "Filename" {
+			continue
+		}
+		fmt.Fprint(w, "%s", sum)
+	}
+	w.Flush()
+	return outbuf.String()
+}
+
+func (cs *Checksums) Filter(types ...string) (string, error) {
+	for _, typ := range types {
+		for ctyp, sum := range *cs {
+			if ctyp == typ {
+				return sum, nil
+			}
+		}
+	}
+	err := fmt.Errorf("type not found")
+	return "", err
 }
