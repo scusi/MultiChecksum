@@ -7,7 +7,7 @@
 //
 // Supported checksums are: MD5, SHA1, SHA2, SHA5, Blake2s, Blake2b (32 byte) and Blake2b (64 byte)
 //
-package multichecksum
+package multichecksum // import "github.com/scusi/MultiChecksum"
 
 import (
 	"bufio"
@@ -62,20 +62,25 @@ func (cs *Checksums) String() string {
 		if typ == "Filename" {
 			continue
 		}
-		fmt.Fprint(w, "%s", sum)
+		fmt.Fprintf(w, "%s", sum)
 	}
 	w.Flush()
 	return outbuf.String()
 }
 
-func (cs *Checksums) Filter(types ...string) (string, error) {
+func (cs *Checksums) Filter(types ...string) string {
+	var outbuf bytes.Buffer
+	w := bufio.NewWriter(&outbuf)
 	for _, typ := range types {
+		//log.Printf("[Filter]: checking for type: %s\n", typ)
 		for ctyp, sum := range *cs {
+			//log.Printf("[Filter]: type of current entity is: %s\n", ctyp)
 			if ctyp == typ {
-				return sum, nil
+				// fmt.Fprintf(w, "%s: %s", ctyp, sum)
+				fmt.Fprintf(w, "%s", sum)
 			}
 		}
+		w.Flush()
 	}
-	err := fmt.Errorf("type not found")
-	return "", err
+	return outbuf.String()
 }
