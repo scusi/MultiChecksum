@@ -10,23 +10,35 @@
 package multichecksum // import "github.com/scusi/MultiChecksum"
 
 import (
-	"bufio"
-	"bytes"
+	//"bufio"
+	//"bytes"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
-	"fmt"
+	//"fmt"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"io"
 )
 
 // Checksums is a map that holds filename and checksums for that file
-type Checksums map[string]string
+//type Checksums map[string]string
+
+// MultiChecksum object to store all hashes for a given file
+type MultiChecksum struct {
+	Filename string
+	Hashes   []Hashsum
+}
+
+// Hashsum object to store a given hashing algorithm and a hash.
+type Hashsum struct {
+	HashName string
+	Hash     []byte
+}
 
 // CalcChecksums takes a filename and the file content and returns a map with the checksums
-func CalcChecksums(filename string, data []byte) *Checksums {
+func CalcChecksums(filename string, data []byte) *MultiChecksum {
 	// generate handles for all our kinds of checksums
 	md5 := md5.New()
 	sha1 := sha1.New()
@@ -40,21 +52,45 @@ func CalcChecksums(filename string, data []byte) *Checksums {
 	// write (file) content to our MultiWriter (w)
 	w.Write(data)
 	// create a map and write filename and checksums to it
-	sums := make(map[string]string)
-	sums["Filename"] = fmt.Sprintf("Checksums for '%s':\n", filename)
-	sums["MD5"] = fmt.Sprintf("MD5      (%s): %x\n", filename, md5.Sum(nil))
-	sums["SHA1"] = fmt.Sprintf("SHA1     (%s): %x\n", filename, sha1.Sum(nil))
-	sums["SHA2"] = fmt.Sprintf("SHA256   (%s): %x\n", filename, sha256.Sum(nil))
-	sums["Blake2s"] = fmt.Sprintf("Blake2s  (%s): %x\n", filename, blake2s.Sum(nil))
-	sums["Blake2b"] = fmt.Sprintf("Blake2b2 (%s): %x\n", filename, blake2b2.Sum(nil))
-	sums["Blake2b5"] = fmt.Sprintf("Blake2b5 (%s): %x\n", filename, blake2b5.Sum(nil))
-	sums["SHA512"] = fmt.Sprintf("SHA512   (%s): %x\n", filename, sha512.Sum(nil))
-	// type conversion - convert our map to our Checksums datatype
-	chksums := Checksums(sums)
-	// return a Checksums datatype map with the result sums
-	return &chksums
+	//sums := make(map[string]string)
+	//mcs := new(MultiChecksum)
+	msc := &MultiChecksum{
+		Filename: filename,
+		Hashes: []Hashsum{
+			Hashsum{HashName: "MD5",
+				Hash: md5.Sum(nil)},
+			{HashName: "SHA1",
+				Hash: sha1.Sum(nil)},
+			{HashName: "SHA256",
+				Hash: sha256.Sum(nil)},
+			{HashName: "Blake2s",
+				Hash: blake2s.Sum(nil)},
+			{HashName: "Blake2b",
+				Hash: blake2b2.Sum(nil)},
+			{HashName: "SHA512",
+				Hash: sha512.Sum(nil)},
+			{HashName: "Blake5",
+				Hash: blake2b5.Sum(nil)},
+		},
+	}
+	/*
+		sums["Filename"] = fmt.Sprintf("Checksums for '%s':\n", filename)
+		sums["MD5"] = fmt.Sprintf("MD5      (%s): %x\n", filename, md5.Sum(nil))
+		sums["SHA1"] = fmt.Sprintf("SHA1     (%s): %x\n", filename, sha1.Sum(nil))
+		sums["SHA2"] = fmt.Sprintf("SHA256   (%s): %x\n", filename, sha256.Sum(nil))
+		sums["Blake2s"] = fmt.Sprintf("Blake2s  (%s): %x\n", filename, blake2s.Sum(nil))
+		sums["Blake2b"] = fmt.Sprintf("Blake2b2 (%s): %x\n", filename, blake2b2.Sum(nil))
+		sums["Blake2b5"] = fmt.Sprintf("Blake2b5 (%s): %x\n", filename, blake2b5.Sum(nil))
+		sums["SHA512"] = fmt.Sprintf("SHA512   (%s): %x\n", filename, sha512.Sum(nil))
+		// type conversion - convert our map to our Checksums datatype
+		chksums := Checksums(sums)
+		// return a Checksums datatype map with the result sums
+		return &chksums
+	*/
+	return msc
 }
 
+/*
 func (cs *Checksums) String() string {
 	var outbuf bytes.Buffer
 	w := bufio.NewWriter(&outbuf)
@@ -84,3 +120,4 @@ func (cs *Checksums) Filter(types ...string) string {
 	}
 	return outbuf.String()
 }
+*/
