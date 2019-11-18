@@ -20,10 +20,20 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		chksums := multichecksum.CalcChecksums(filename, data)
-		for _, sum := range *chksums {
-			fmt.Printf("%s", sum)
+		sum := multichecksum.CalcChecksums(filename, data)
+		fmt.Printf("Checksums for %s:\n", sum.Filename)
+		for _, h := range sum.Hashes {
+			fmt.Printf(" %s %s%s\t%x\n", sum.Filename, h.HashName, Spaces(7-len(h.HashName)), h.Hash)
 		}
+
 	}
 
+}
+
+// Spaces produces a given number of space
+func Spaces(i int) (s string) {
+	for c := 0; c < i; c++ {
+		s = s + " "
+	}
+	return
 }
