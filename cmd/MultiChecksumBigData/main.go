@@ -34,22 +34,17 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 		blake2b5 := blake2b.New512()
 		// create a MultiWriter to write to all handles at once
 		w := io.MultiWriter(md5, sha1, sha256, sha512, blake2s, blake2b2, blake2b5)
-		// write (file) content to our MultiWriter (w)
-		//w.Write(content)
 		// open file handle
 		f, err := os.Open(j)
 		if err != nil {
 			return
 		}
 		defer f.Close()
-		// copy filr to multi writer
+		// copy file to multi writer
 		bytesWritten, err := io.Copy(w, f)
 		if err != nil {
 			return
 		}
-
-		//fmt.Printf("%d bytes read\n", bytesWritten)
-
 		// print out checksums
 		fmt.Fprintf(rw, "Checksums for %s (Size: %d):\n", j, bytesWritten)
 		fmt.Fprintf(rw, "MD5      (%s): %x\n", j, md5.Sum(nil))
@@ -83,10 +78,6 @@ func main() {
 		filename := args[i]
 		// send filename to jobs channel
 		jobsChan <- filename
-		//err := printSums(filename)
-		//if err != nil {
-		//	log.Fatal(err)
-		//}
 	}
 	close(jobsChan)
 
