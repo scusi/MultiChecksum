@@ -1,5 +1,6 @@
 builds:
  -  
+   id: MultiChecksumNL
    main: cmd/MultiChecksumNoLib/MultiChecksum.go
    binary: MultiChecksumNL 
    goos:
@@ -21,7 +22,10 @@ builds:
     - goos: freebsd
       goarch: arm
       goarm: 6
+    - goos: darwin
+      goarch: 386
  -  
+   id: MultiChecksum
    main: cmd/MultiChecksum/Multichecksum.go
    binary: MultiChecksum 
    goos:
@@ -43,7 +47,10 @@ builds:
     - goos: freebsd
       goarch: arm
       goarm: 6
+    - goos: darwin
+      goarch: 386
  -  
+   id: MultiChecksumBigData
    main: cmd/MultiChecksumBigData/main.go
    binary: MultiChecksumBigData
    goos:
@@ -65,10 +72,12 @@ builds:
     - goos: freebsd
       goarch: arm
       goarm: 6
-
-archive:
-  name_template: "{{.Os}}-{{.Arch}}-{{ .ProjectName }}"
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
+    - goos: darwin
+      goarch: 386
+archives:
+  -
+    name_template: "{{.Os}}-{{.Arch}}-{{ .ProjectName }}"
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
