@@ -1,3 +1,7 @@
+/* MultiChecksum BigData Variant
+   MultiChecksum is a tool to get multiple checksums of given files at once.
+   This (BigData) variant is implemented in a way it can handle files bigger than your amount of RAM.
+*/
 package main
 
 import (
