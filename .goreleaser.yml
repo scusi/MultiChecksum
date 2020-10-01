@@ -43,6 +43,28 @@ builds:
     - goos: freebsd
       goarch: arm
       goarm: 6
+ -  
+   main: cmd/MultiChecksumBigData/main.go
+   binary: MultiChecksumBigData
+   goos:
+    - darwin
+    - linux
+    - windows
+    - freebsd
+    - netbsd
+    - openbsd
+   goarch:
+    - amd64
+    - 386
+    - arm
+    - arm64
+   ignore:
+    - goos: openbsd
+      goarch: arm
+      goarm: 6
+    - goos: freebsd
+      goarch: arm
+      goarm: 6
 
 archive:
   name_template: "{{.Os}}-{{.Arch}}-{{ .ProjectName }}"
