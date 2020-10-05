@@ -4,8 +4,12 @@ MultiChecksum
 MultiChecksum is a go module and a commandline application to generate 
 multiple cryptographic checksums at once for a given set of files.
 
-Library Variant
-===============
+## Variants
+
+There are different variants available, the key differences are described below.
+
+### Library Variant
+
 
 There is a very simple library called `multichecksum`. It consists out of one 
 function and one type.
@@ -31,23 +35,28 @@ library as you can see in the following listing:
         [...]
 ```
 
-Stand Alone Variant
-===================
+### Stand Alone Variant
 
 The stand alone variant is under `cmd/MultiChecksumNoLib/`. This is a
 command line tool that does the job, no library required.
 
 This is basically the first version of MultiChecksum
 
-Fetch
-=====
+### BigData Variant
+
+There is also a _BigData_ variant, under `cmd/MultiChecksumBigData/`.
+The BigData variant is different from the above variants in the following ways:
+
+- it does not load the whole data to checksum into memory, instead it streams the data.
+- it starts a worker for each given file to calculate the checksums.
+
+## Fetch
 
 ```
 go get github.com/scusi/MultiChecksum
 ```
 
-Install
-=======
+## Install
 
 ```
 # Install the lib
@@ -59,8 +68,7 @@ cd ${GOPATH}/src/github.com/scusi/MultiChecksum/cmd/MultiChecksum/
 go install MultiChecksum.go
 ```
 
-Run
-===
+## Run
 
 After installing the commandline app you should be able to execute
 
