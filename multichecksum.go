@@ -10,13 +10,12 @@
 package multichecksum // import "github.com/scusi/MultiChecksum"
 
 import (
-	//"bufio"
-	//"bytes"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
-	//"fmt"
+	// TODO: implement and add support for SHA3
+	// "golang.org/x/crypto/sha3"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"io"
