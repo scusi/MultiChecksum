@@ -15,7 +15,7 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	// TODO: implement and add support for SHA3
-	// "golang.org/x/crypto/sha3"
+	"golang.org/x/crypto/sha3"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"io"
@@ -46,8 +46,9 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 	blake2s := blake2s.New256()
 	blake2b2 := blake2b.New256()
 	blake2b5 := blake2b.New512()
+	sha3256 := sha3.New256()
 	// create a MultiWriter to write to all handles at once
-	w := io.MultiWriter(md5, sha1, sha256, sha512, blake2s, blake2b2, blake2b5)
+	w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, blake2s, blake2b2, blake2b5)
 	// write (file) content to our MultiWriter (w)
 	w.Write(data)
 	// create a map and write filename and checksums to it
@@ -62,6 +63,8 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 				Hash: sha1.Sum(nil)},
 			{HashName: "SHA256",
 				Hash: sha256.Sum(nil)},
+			{HashName: "SHA3-256",
+				Hash: sha3256.Sum(nil)},
 			{HashName: "Blake2s",
 				Hash: blake2s.Sum(nil)},
 			{HashName: "Blake2b",
