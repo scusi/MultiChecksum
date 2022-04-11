@@ -3,4 +3,4 @@ cmd/MultiChecksumBigData/MultiChecksumBigData
 cmd/MultiChecksumBigData/MultiChecksum_x32.exe
 cmd/MultiChecksumBigData/MultiChecksum_x64.exe
 cmd/MultiChecksumNoLib/MultiChecksum
-
+dist/
