@@ -84,51 +84,5 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 				Hash: blake2b5.Sum(nil)},
 		},
 	}
-	/*
-		sums["Filename"] = fmt.Sprintf("Checksums for '%s':\n", filename)
-		sums["MD5"] = fmt.Sprintf("MD5      (%s): %x\n", filename, md5.Sum(nil))
-		sums["SHA1"] = fmt.Sprintf("SHA1     (%s): %x\n", filename, sha1.Sum(nil))
-		sums["SHA2"] = fmt.Sprintf("SHA256   (%s): %x\n", filename, sha256.Sum(nil))
-		sums["Blake2s"] = fmt.Sprintf("Blake2s  (%s): %x\n", filename, blake2s.Sum(nil))
-		sums["Blake2b"] = fmt.Sprintf("Blake2b2 (%s): %x\n", filename, blake2b2.Sum(nil))
-		sums["Blake2b5"] = fmt.Sprintf("Blake2b5 (%s): %x\n", filename, blake2b5.Sum(nil))
-		sums["SHA512"] = fmt.Sprintf("SHA512   (%s): %x\n", filename, sha512.Sum(nil))
-		// type conversion - convert our map to our Checksums datatype
-		chksums := Checksums(sums)
-		// return a Checksums datatype map with the result sums
-		return &chksums
-	*/
 	return msc
 }
-
-/*
-func (cs *Checksums) String() string {
-	var outbuf bytes.Buffer
-	w := bufio.NewWriter(&outbuf)
-	for typ, sum := range *cs {
-		if typ == "Filename" {
-			continue
-		}
-		fmt.Fprintf(w, "%s", sum)
-	}
-	w.Flush()
-	return outbuf.String()
-}
-
-func (cs *Checksums) Filter(types ...string) string {
-	var outbuf bytes.Buffer
-	w := bufio.NewWriter(&outbuf)
-	for _, typ := range types {
-		//log.Printf("[Filter]: checking for type: %s\n", typ)
-		for ctyp, sum := range *cs {
-			//log.Printf("[Filter]: type of current entity is: %s\n", ctyp)
-			if ctyp == typ {
-				// fmt.Fprintf(w, "%s: %s", ctyp, sum)
-				fmt.Fprintf(w, "%s", sum)
-			}
-		}
-		w.Flush()
-	}
-	return outbuf.String()
-}
-*/
