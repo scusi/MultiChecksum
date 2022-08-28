@@ -5,7 +5,14 @@
 // If you want to have the same functionality in a single go source file, please look at:
 // cmd/MultiChecksumNoLib/MultiChecksum.go
 //
-// Supported checksums are: MD5, SHA1, SHA2, SHA5, Blake2s, Blake2b (32 byte) and Blake2b (64 byte)
+// Supported checksums are: 
+//   - MD5, 
+//   - SHA-1, 
+//   - SHA-2, 
+//   - SHA-3 (32 and 64 byte),
+//   - SHA-5, 
+//   - Blake2s, 
+//   - Blake2b (32 and 64 byte)
 //
 package multichecksum // import "github.com/scusi/MultiChecksum"
 
@@ -14,7 +21,6 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
-	// TODO: implement and add support for SHA3
 	"golang.org/x/crypto/sha3"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
