@@ -53,8 +53,9 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 	blake2b2 := blake2b.New256()
 	blake2b5 := blake2b.New512()
 	sha3256 := sha3.New256()
+	sha3512 := sha3.New512()
 	// create a MultiWriter to write to all handles at once
-	w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, blake2s, blake2b2, blake2b5)
+	w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, sha3512, blake2s, blake2b2, blake2b5)
 	// write (file) content to our MultiWriter (w)
 	w.Write(data)
 	// create a map and write filename and checksums to it
@@ -77,6 +78,8 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 				Hash: blake2b2.Sum(nil)},
 			{HashName: "SHA512",
 				Hash: sha512.Sum(nil)},
+			{HashName: "SHA3-512",
+				Hash: sha3512.Sum(nil)},
 			{HashName: "Blake5",
 				Hash: blake2b5.Sum(nil)},
 		},
