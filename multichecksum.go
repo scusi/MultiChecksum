@@ -5,13 +5,13 @@
 // If you want to have the same functionality in a single go source file, please look at:
 // cmd/MultiChecksumNoLib/MultiChecksum.go
 //
-// Supported checksums are: 
-//   - MD5, 
-//   - SHA-1, 
-//   - SHA-2, 
+// Supported checksums are:
+//   - MD5,
+//   - SHA-1,
+//   - SHA-2,
 //   - SHA-3 (32 and 64 byte),
-//   - SHA-5, 
-//   - Blake2s, 
+//   - SHA-5,
+//   - Blake2s,
 //   - Blake2b (32 and 64 byte)
 //
 package multichecksum // import "github.com/scusi/MultiChecksum"
@@ -21,11 +21,24 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
-	"golang.org/x/crypto/sha3"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
+	"golang.org/x/crypto/sha3"
 	"io"
 )
+
+// build time variables as used by goreleaser
+var (
+	version string
+	commit  string
+	date    string
+	builtBy string
+)
+
+// Version - returns the version information
+func Version() (info string) {
+	return "multichecksum lib Version " + version + " built by " + builtBy + " from commit " + commit + " at " + date
+}
 
 // MultiChecksum object to store all hashes for a given file
 type MultiChecksum struct {
