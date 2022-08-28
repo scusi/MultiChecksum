@@ -27,9 +27,6 @@ import (
 	"io"
 )
 
-// Checksums is a map that holds filename and checksums for that file
-//type Checksums map[string]string
-
 // MultiChecksum object to store all hashes for a given file
 type MultiChecksum struct {
 	Filename string
@@ -59,8 +56,6 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 	// write (file) content to our MultiWriter (w)
 	w.Write(data)
 	// create a map and write filename and checksums to it
-	//sums := make(map[string]string)
-	//mcs := new(MultiChecksum)
 	msc := &MultiChecksum{
 		Filename: filename,
 		Hashes: []Hashsum{
