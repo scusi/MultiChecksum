@@ -100,7 +100,7 @@ func main() {
 	// get command line arguments (without our own name)
 	args := flag.Args()
 	if beVerbose {
-		log.Printf("flags: %v", args)
+		fmt.Printf("flags: %v", args)
 	}
 	// print how many files we where given
 	fmt.Println("Number of Files given: ", len(args))
