@@ -17,7 +17,27 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"flag"
 )
+
+var (
+	version	string
+	commit	string
+	date	string
+	builtBy	string
+)
+
+var showVersion bool
+var beVerbose	bool
+
+func init() {
+	flag.BoolVar(&showVersion, "version", false, "shows version info, and exits")
+	flag.BoolVar(&beVerbose, "verbose", false, "be verbose")
+}
+
+func VersionInfo() {
+	fmt.Printf("Multichecksum CMD (NoLib) Version: %s compiled by %s from commit %s at %s\n", version, builtBy, commit, date)
+}
 
 // loader - returns the content of a given file as []byte
 // takes a string (the filename of the file to read) as argument
@@ -72,8 +92,16 @@ func printSums(filename string) {
 }
 
 func main() {
+	flag.Parse()
+	if showVersion {
+		VersionInfo()
+		os.Exit(0)
+	}
 	// get command line arguments (without our own name)
-	args := os.Args[1:]
+	args := flag.Args()
+	if beVerbose {
+		log.Printf("flags: %v", args)
+	}
 	// print how many files we where given
 	fmt.Println("Number of Files given: ", len(args))
 	// iterate over arguments given and call printSums for each filename
