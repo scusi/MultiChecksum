@@ -37,7 +37,7 @@ func init() {
 }
 
 func VersionInfo() {
-	fmt.Printf("Multichecksum CMD Version: %s compiled by %s from commit %s at %s\n", version, builtBy, commit, date)
+	fmt.Printf("Multichecksum CMD (BigData) Version: %s compiled by %s from commit %s at %s\n", version, builtBy, commit, date)
 }
 
 // generate and print checksum for each file
