@@ -4,13 +4,41 @@ import (
 	"fmt"
 	"github.com/scusi/MultiChecksum"
 	"io/ioutil"
+	"flag"
 	"log"
 	"os"
 )
 
+var (
+	version	string
+	commit	string
+	date	string
+	builtBy	string
+)
+
+var showVersion bool
+var beVerbose	bool
+
+func init() {
+	flag.BoolVar(&showVersion, "version", false, "shows version info, and exits")
+	flag.BoolVar(&beVerbose, "verbose", false, "be verbose")
+}
+
+func VersionInfo() {
+	fmt.Printf("Multichecksum CMD Version: %s compiled by %s from commit %s at %s\n", version, builtBy, commit, date)
+}
+
 func main() {
+	flag.Parse()
+	if showVersion {
+		VersionInfo()
+		os.Exit(0)
+	}
 	// get command line arguments (without our own name)
-	args := os.Args[1:]
+	args := flag.Args()
+	if beVerbose {
+		log.Printf("flags: %v", args)
+	}
 	// print how many files we where given
 	fmt.Println("Number of Files given: ", len(args))
 	// iterate over arguments given and call printSums for each filename

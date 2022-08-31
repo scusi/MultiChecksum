@@ -7,6 +7,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"flag"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
@@ -19,6 +20,25 @@ import (
 	"log"
 	"os"
 )
+
+var (
+	version	string
+	commit	string
+	date	string
+	builtBy	string
+)
+
+var showVersion bool
+var beVerbose	bool
+
+func init() {
+	flag.BoolVar(&showVersion, "version", false, "shows version info, and exits")
+	flag.BoolVar(&beVerbose, "verbose", false, "be verbose")
+}
+
+func VersionInfo() {
+	fmt.Printf("Multichecksum CMD Version: %s compiled by %s from commit %s at %s\n", version, builtBy, commit, date)
+}
 
 // generate and print checksum for each file
 // takes a string (filename) as argument
@@ -70,8 +90,16 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 }
 
 func main() {
+	flag.Parse()
+	if showVersion {
+		VersionInfo()
+		os.Exit(0)
+	}
 	// get command line arguments (without our own name)
-	args := os.Args[1:]
+	args := flag.Args()
+	if beVerbose {
+		log.Printf("flags: %v", args)
+	}
 	// print how many files we where given
 	fmt.Println("Number of Files given: ", len(args))
 	jobsChan := make(chan string, 100)
