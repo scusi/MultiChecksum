@@ -99,9 +99,9 @@ func main() {
 	args := flag.Args()
 	if beVerbose {
 		log.Printf("flags: %v", args)
+		// print how many files we where given
+		fmt.Println("Number of Files given: ", len(args))
 	}
-	// print how many files we where given
-	fmt.Println("Number of Files given: ", len(args))
 	jobsChan := make(chan string, 100)
 	resultChan := make(chan string, 100)
 
