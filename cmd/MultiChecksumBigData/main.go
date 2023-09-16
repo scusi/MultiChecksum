@@ -46,7 +46,9 @@ func VersionInfo() {
 //func printSums(filename string) (err error) {
 func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 	for j := range jobsChan {
-		log.Printf("started worker %d for '%s'\n", w, j)
+		if beVerbose {
+			log.Printf("started worker %d for '%s'\n", w, j)
+		}
 		var resultBuf bytes.Buffer
 		rw := bufio.NewWriter(&resultBuf)
 		// generate handles for all our kinds of checksums
