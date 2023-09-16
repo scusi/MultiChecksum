@@ -1,6 +1,8 @@
 builds:
  -  
    id: MultiChecksumNL
+   ldflags:
+     - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
    main: cmd/MultiChecksumNoLib/MultiChecksum.go
    binary: MultiChecksumNL 
    goos:
@@ -26,6 +28,8 @@ builds:
       goarch: 386
  -  
    id: MultiChecksum
+   ldflags:
+     - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
    main: cmd/MultiChecksum/Multichecksum.go
    binary: MultiChecksum 
    goos:
@@ -51,6 +55,8 @@ builds:
       goarch: 386
  -  
    id: MultiChecksumBigData
+   ldflags:
+     - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
    main: cmd/MultiChecksumBigData/main.go
    binary: MultiChecksumBigData
    goos:
