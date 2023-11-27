@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
+	"github.com/zeebo/blake3"
 	"io"
 	"io/ioutil"
 	"os"
@@ -72,23 +73,25 @@ func printSums(filename string) {
 	blake2s := blake2s.New256()
 	blake2b2 := blake2b.New256()
 	blake2b5 := blake2b.New512()
+	b3 := blake3.New()
 	sha3256 := sha3.New256()
 	sha3512 := sha3.New512()
 	// create a MultiWriter to write to all handles at once
-	w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, sha3512, blake2s, blake2b2, blake2b5)
+	w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, sha3512, blake2s, blake2b2, blake2b5, b3)
 	// write (file) content to our MultiWriter (w)
 	w.Write(content)
 	// print out checksums
 	fmt.Printf("Checksums for %s:\n", filename)
-	fmt.Printf("MD5      (%s): %x\n", filename, md5.Sum(nil))
-	fmt.Printf("SHA1     (%s): %x\n", filename, sha1.Sum(nil))
-	fmt.Printf("SHA256   (%s): %x\n", filename, sha256.Sum(nil))
-	fmt.Printf("SHA3-256 (%s): %x\n", filename, sha3256.Sum(nil))
-	fmt.Printf("Blake2s  (%s): %x\n", filename, blake2s.Sum(nil))
-	fmt.Printf("Blake2b2 (%s): %x\n", filename, blake2b2.Sum(nil))
-	fmt.Printf("Blake2b5 (%s): %x\n", filename, blake2b5.Sum(nil))
-	fmt.Printf("SHA512   (%s): %x\n", filename, sha512.Sum(nil))
-	fmt.Printf("SHA3-512 (%s): %x\n", filename, sha3512.Sum(nil))
+	fmt.Printf("MD5        (%s): %x\n", filename, md5.Sum(nil))
+	fmt.Printf("SHA1       (%s): %x\n", filename, sha1.Sum(nil))
+	fmt.Printf("SHA256     (%s): %x\n", filename, sha256.Sum(nil))
+	fmt.Printf("SHA3-256   (%s): %x\n", filename, sha3256.Sum(nil))
+	fmt.Printf("Blake2s    (%s): %x\n", filename, blake2s.Sum(nil))
+	fmt.Printf("Blake2b2   (%s): %x\n", filename, blake2b2.Sum(nil))
+	fmt.Printf("Blake3-256 (%s): %x\n", filename, b3.Sum(nil))
+	fmt.Printf("Blake2b5   (%s): %x\n", filename, blake2b5.Sum(nil))
+	fmt.Printf("SHA512     (%s): %x\n", filename, sha512.Sum(nil))
+	fmt.Printf("SHA3-512   (%s): %x\n", filename, sha3512.Sum(nil))
 }
 
 func main() {

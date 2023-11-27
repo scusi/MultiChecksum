@@ -24,6 +24,7 @@ import (
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"golang.org/x/crypto/sha3"
+	"github.com/zeebo/blake3"
 	"io"
 )
 
@@ -62,6 +63,7 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 	blake2s := blake2s.New256()
 	blake2b2 := blake2b.New256()
 	blake2b5 := blake2b.New512()
+	blake3 := blake3.New()
 	sha3256 := sha3.New256()
 	sha3512 := sha3.New512()
 	// create a MultiWriter to write to all handles at once
@@ -84,6 +86,8 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 				Hash: blake2s.Sum(nil)},
 			{HashName: "Blake2b",
 				Hash: blake2b2.Sum(nil)},
+			{HashName: "Blake3-256",
+				Hash: blake3.Sum(nil)},
 			{HashName: "SHA512",
 				Hash: sha512.Sum(nil)},
 			{HashName: "SHA3-512",

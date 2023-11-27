@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
+	"github.com/zeebo/blake3"
 	"io"
 	"log"
 	"os"
@@ -59,10 +60,11 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 		blake2s := blake2s.New256()
 		blake2b2 := blake2b.New256()
 		blake2b5 := blake2b.New512()
+		b3 := blake3.New()
 		sha3256 := sha3.New256()
 		sha3512 := sha3.New512()
 		// create a MultiWriter to write to all handles at once
-		w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, blake2s, blake2b2, blake2b5, sha3512)
+		w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, blake2s, blake2b2, blake2b5, sha3512, b3)
 		// open file handle
 		f, err := os.Open(j)
 		if err != nil {
@@ -76,15 +78,16 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 		}
 		// print out checksums
 		fmt.Fprintf(rw, "Checksums for %s (Size: %d):\n", j, bytesWritten)
-		fmt.Fprintf(rw, "MD5      (%s): %x\n", j, md5.Sum(nil))
-		fmt.Fprintf(rw, "SHA1     (%s): %x\n", j, sha1.Sum(nil))
-		fmt.Fprintf(rw, "SHA256   (%s): %x\n", j, sha256.Sum(nil))
-		fmt.Fprintf(rw, "SHA3-256 (%s): %x\n", j, sha3256.Sum(nil))
-		fmt.Fprintf(rw, "Blake2s  (%s): %x\n", j, blake2s.Sum(nil))
-		fmt.Fprintf(rw, "Blake2b2 (%s): %x\n", j, blake2b2.Sum(nil))
-		fmt.Fprintf(rw, "Blake2b5 (%s): %x\n", j, blake2b5.Sum(nil))
-		fmt.Fprintf(rw, "SHA512   (%s): %x\n", j, sha512.Sum(nil))
-		fmt.Fprintf(rw, "SHA3-512 (%s): %x\n", j, sha3512.Sum(nil))
+		fmt.Fprintf(rw, "MD5        (%s): %x\n", j, md5.Sum(nil))
+		fmt.Fprintf(rw, "SHA1       (%s): %x\n", j, sha1.Sum(nil))
+		fmt.Fprintf(rw, "SHA256     (%s): %x\n", j, sha256.Sum(nil))
+		fmt.Fprintf(rw, "SHA3-256   (%s): %x\n", j, sha3256.Sum(nil))
+		fmt.Fprintf(rw, "Blake2s    (%s): %x\n", j, blake2s.Sum(nil))
+		fmt.Fprintf(rw, "Blake2b2   (%s): %x\n", j, blake2b2.Sum(nil))
+		fmt.Fprintf(rw, "Blake2b5   (%s): %x\n", j, blake2b5.Sum(nil))
+		fmt.Fprintf(rw, "Blake3-256 (%s): %x\n", j, b3.Sum(nil))
+		fmt.Fprintf(rw, "SHA512     (%s): %x\n", j, sha512.Sum(nil))
+		fmt.Fprintf(rw, "SHA3-512   (%s): %x\n", j, sha3512.Sum(nil))
 		rw.Flush()
 		resultChan <- resultBuf.String()
 	}
