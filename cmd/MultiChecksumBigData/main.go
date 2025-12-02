@@ -1,6 +1,7 @@
 /* MultiChecksum BigData Variant
    MultiChecksum is a tool to get multiple checksums of given files at once.
-   This (BigData) variant is implemented in a way it can handle files bigger than your amount of RAM.
+   This (BigData) variant is implemented in a way it can handle files bigger
+	 than your amount of RAM.
 */
 package main
 
@@ -73,6 +74,9 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 		defer f.Close()
 		// copy file to multi writer
 		bytesWritten, err := io.Copy(w, f)
+		if beVerbose {
+			log.Printf("%d bytes written\n", bytesWritten)
+		}
 		if err != nil {
 			return
 		}
