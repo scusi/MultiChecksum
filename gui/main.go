@@ -92,12 +92,12 @@ func main() {
 			defer reader.Close()
 
 			fileEntry.SetText(reader.URI().Path())
-		})
+		}, myWindow)
 	})
 
 	// Calculate button
 	calculateBtn := widget.NewButton("Calculate Checksums", func() {
-		filename := strings.TrimSpace(fileEntry.Text())
+		filename := strings.TrimSpace(fileEntry.Text)
 		if filename == "" {
 			dialog.ShowInformation("Error", "Please select a file first", myWindow)
 			return
@@ -216,12 +216,4 @@ func main() {
 	myWindow.SetContent(content)
 	myWindow.Resize(fyne.NewSize(800, 600))
 	myWindow.ShowAndRun()
-}
-
-// Implement drag and drop support
-func init() {
-	// Register custom URI handler for drag and drop
-	storage.RegisterCustomURIHandler("file", func(uri fyne.URI) {
-		// This will be handled by the file dialog
-	})
 }
