@@ -94,13 +94,11 @@ func main() {
 
 			// Convert URI path to absolute file path
 			filePath := reader.URI().Path()
-			log.Printf("DEBUG: URI Path: %s", filePath)
 
 			// For file:// URIs, we need to handle them properly
 			if strings.HasPrefix(filePath, "file://") {
 				filePath = strings.TrimPrefix(filePath, "file://")
 			}
-			log.Printf("DEBUG: Cleaned Path: %s", filePath)
 
 			fileEntry.SetText(filePath)
 		}, myWindow)
@@ -109,8 +107,7 @@ func main() {
 	// Calculate button
 	calculateBtn := widget.NewButton("Calculate Checksums", func() {
 		filename := strings.TrimSpace(fileEntry.Text)
-		log.Printf("DEBUG: Filename from entry: '%s'", filename)
-		
+
 		if filename == "" {
 			dialog.ShowInformation("Error", "Please select a file first", myWindow)
 			return
@@ -119,29 +116,23 @@ func main() {
 		// Check if file exists
 		fileInfo, err := os.Stat(filename)
 		if os.IsNotExist(err) {
-			log.Printf("DEBUG: File does not exist: %s", filename)
 			dialog.ShowError(fmt.Errorf("file does not exist: %s", filename), myWindow)
 			return
 		}
-		log.Printf("DEBUG: File exists, size: %d bytes", fileInfo.Size())
 
 		// Load file
 		data, err := os.ReadFile(filename)
 		if err != nil {
-			log.Printf("DEBUG: Error reading file: %v", err)
 			dialog.ShowError(err, myWindow)
 			return
 		}
-		log.Printf("DEBUG: Read %d bytes from file", len(data))
 
 		// Calculate checksums
 		checksums, err := multichecksum.CalcChecksums(filename, data)
 		if err != nil {
-			log.Printf("DEBUG: Error calculating checksums: %v", err)
 			dialog.ShowError(err, myWindow)
 			return
 		}
-		log.Printf("DEBUG: Calculated %d checksums", len(checksums.Hashes))
 
 		// Build result string based on selected hashes
 		var result strings.Builder
@@ -178,13 +169,18 @@ func main() {
 		// Add selected checksums to result
 		for _, h := range checksums.Hashes {
 			if shouldInclude(h.HashName) {
-				log.Printf("DEBUG: Adding checksum: %s = %x", h.HashName, h.Hash)
 				result.WriteString(fmt.Sprintf("%s: %x\n", h.HashName, h.Hash))
 			}
 		}
 
-		log.Printf("DEBUG: Final result: %s", result.String())
+		// Update the UI label on the main thread
+		myApp.SendNotification(&fyne.Notification{
+			Title:   "Checksums Calculated",
+			Content: "Checksums have been calculated and displayed below.",
+		})
 		resultLabel.SetText(result.String())
+		// Force a refresh of the label
+		resultLabel.Refresh()
 	})
 
 	// Copy to clipboard button
