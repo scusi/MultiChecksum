@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -114,8 +113,7 @@ func main() {
 		}
 
 		// Check if file exists
-		fileInfo, err := os.Stat(filename)
-		if os.IsNotExist(err) {
+		if _, err := os.Stat(filename); os.IsNotExist(err) {
 			dialog.ShowError(fmt.Errorf("file does not exist: %s", filename), myWindow)
 			return
 		}
@@ -174,10 +172,6 @@ func main() {
 		}
 
 		// Update the UI label on the main thread
-		myApp.SendNotification(&fyne.Notification{
-			Title:   "Checksums Calculated",
-			Content: "Checksums have been calculated and displayed below.",
-		})
 		resultLabel.SetText(result.String())
 		// Force a refresh of the label
 		resultLabel.Refresh()
