@@ -75,9 +75,9 @@ func main() {
 		blake2b512Check.SetChecked(false)
 	})
 
-	// Result display - use a label that we can update
-	resultLabel := widget.NewLabel("Checksums will appear here...")
-	resultLabel.Wrapping = fyne.TextWrapWord
+	// Result display - use TextGrid for proper multi-line display
+	resultText := widget.NewTextGrid()
+	resultText.SetText("Checksums will appear here...")
 
 	// File selection button
 	browseBtn := widget.NewButton("Browse...", func() {
@@ -119,8 +119,8 @@ func main() {
 		}
 
 		// Show loading state
-		resultLabel.SetText("Calculating checksums...")
-		resultLabel.Refresh()
+		resultText.SetText("Calculating checksums...")
+		resultText.Refresh()
 
 		// Load file
 		data, err := os.ReadFile(filename)
@@ -175,21 +175,18 @@ func main() {
 			}
 		}
 
-		// Update the result label
-		resultLabel.SetText(result.String())
-		resultLabel.Refresh()
-		
-		// Force a full window refresh to ensure the label updates
-		myWindow.Content().Refresh()
+		// Update the result text grid
+		resultText.SetText(result.String())
+		resultText.Refresh()
 	})
 
 	// Copy to clipboard button
 	copyBtn := widget.NewButton("Copy to Clipboard", func() {
-		if resultLabel.Text == "Checksums will appear here..." {
+		if resultText.Text() == "Checksums will appear here..." {
 			dialog.ShowInformation("Info", "No checksums to copy", myWindow)
 			return
 		}
-		myWindow.Clipboard().SetContent(resultLabel.Text)
+		myWindow.Clipboard().SetContent(resultText.Text())
 		dialog.ShowInformation("Success", "Checksums copied to clipboard!", myWindow)
 	})
 
@@ -228,7 +225,7 @@ func main() {
 		hashGrid,
 		buttonRow,
 		widget.NewSeparator(),
-		container.NewScroll(container.NewVBox(resultLabel)),
+		container.NewScroll(resultText),
 	)
 
 	myWindow.SetContent(content)
