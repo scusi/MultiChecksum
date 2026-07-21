@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	myApp := app.New()
+	myApp := app.NewWithID("github.com.scusi.MultiChecksum")
 	myWindow := myApp.NewWindow("MultiChecksum")
 
 	// Create UI elements
