@@ -13,11 +13,11 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
-	"golang.org/x/crypto/sha3"
 	"fmt"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"github.com/zeebo/blake3"
+	"golang.org/x/crypto/sha3"
 	"io"
 	"log"
 	"os"
@@ -42,11 +42,16 @@ func VersionInfo() {
 	fmt.Printf("Multichecksum CMD (BigData) Version: %s compiled by %s from commit %s at %s\n", version, builtBy, commit, date)
 }
 
+// checksumResult holds the result of a checksum calculation for a file
+type checksumResult struct {
+	output string
+	err    error
+}
+
 // generate and print checksum for each file
 // takes a string (filename) as argument
 // prints different kinds of checksums for file
-//func printSums(filename string) (err error) {
-func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
+func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- checksumResult) {
 	for j := range jobsChan {
 		if beVerbose {
 			log.Printf("started worker %d for '%s'\n", w, j)
@@ -65,11 +70,12 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 		sha3256 := sha3.New256()
 		sha3512 := sha3.New512()
 		// create a MultiWriter to write to all handles at once
-		w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, blake2s, blake2b2, blake2b5, sha3512, b3)
+		w := io.MultiWriter(md5, sha1, sha256, sha512, sha3256, sha3512, blake2s, blake2b2, blake2b5, sha3512, b3)
 		// open file handle
 		f, err := os.Open(j)
 		if err != nil {
-			return
+			resultChan <- checksumResult{err: fmt.Errorf("worker %d: failed to open %s: %w", w, j, err)}
+			continue
 		}
 		defer f.Close()
 		// copy file to multi writer
@@ -78,7 +84,8 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 			log.Printf("%d bytes written\n", bytesWritten)
 		}
 		if err != nil {
-			return
+			resultChan <- checksumResult{err: fmt.Errorf("worker %d: failed to copy %s: %w", w, j, err)}
+			continue
 		}
 		// print out checksums
 		fmt.Fprintf(rw, "Checksums for %s (Size: %d):\n", j, bytesWritten)
@@ -93,9 +100,8 @@ func checksumWorker(w int, jobsChan <-chan string, resultChan chan<- string) {
 		fmt.Fprintf(rw, "SHA512     (%s): %x\n", j, sha512.Sum(nil))
 		fmt.Fprintf(rw, "SHA3-512   (%s): %x\n", j, sha3512.Sum(nil))
 		rw.Flush()
-		resultChan <- resultBuf.String()
+		resultChan <- checksumResult{output: resultBuf.String()}
 	}
-	return
 }
 
 func main() {
@@ -111,24 +117,36 @@ func main() {
 		// print how many files we where given
 		fmt.Println("Number of Files given: ", len(args))
 	}
-	jobsChan := make(chan string, 100)
-	resultChan := make(chan string, 100)
 
+	// Create channels with buffer size based on number of files
+	jobsChan := make(chan string, len(args))
+	resultChan := make(chan checksumResult, len(args))
+
+	// Start a worker for each file
 	for w := 1; w <= len(args); w++ {
 		go checksumWorker(w, jobsChan, resultChan)
-
 	}
 
 	// iterate over arguments given and add filenames to the jobs channel
-	for i := 0; i < len(args); i++ {
-		filename := args[i]
-		// send filename to jobs channel
+	for _, filename := range args {
 		jobsChan <- filename
 	}
 	close(jobsChan)
 
 	// collect results
+	hasError := false
 	for a := 1; a <= len(args); a++ {
-		fmt.Printf("%s", <-resultChan)
+		result := <-resultChan
+		if result.err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.err)
+			hasError = true
+		} else {
+			fmt.Printf("%s", result.output)
+		}
+	}
+	close(resultChan)
+
+	if hasError {
+		os.Exit(1)
 	}
 }

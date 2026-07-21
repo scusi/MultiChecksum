@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"github.com/andlabs/ui"
 	"github.com/scusi/MultiChecksum"
-	"io/ioutil"
+	"os"
 )
 
 func loadFile(filename string) (data []byte, err error) {
-	data, err = ioutil.ReadFile(filename)
+	data, err = os.ReadFile(filename)
 	if err != nil {
 		return data, err
 	}
@@ -62,22 +62,22 @@ func main() {
 			if err != nil {
 				greeting.SetText("Error: " + err.Error())
 			} else {
-				chksums := multichecksum.CalcChecksums(filename, data)
-				var outbuf bytes.Buffer
-				w := bufio.NewWriter(&outbuf)
-				fmt.Fprintf(w, "Checksums for '%s'\n", filename)
-				for typ, sum := range *chksums {
-					if typ == "Filename" {
-						continue
-					} else {
-						fmt.Fprintf(w, "%s", sum)
+				chksums, err := multichecksum.CalcChecksums(filename, data)
+				if err != nil {
+					greeting.SetText("Error: " + err.Error())
+				} else {
+					var outbuf bytes.Buffer
+					w := bufio.NewWriter(&outbuf)
+					fmt.Fprintf(w, "Checksums for '%s'\n", filename)
+					for _, h := range chksums.Hashes {
+						fmt.Fprintf(w, "%s: %x\n", h.HashName, h.Hash)
 					}
-				}
-				fmt.Fprintln(w, "")
-				fmt.Fprintln(w, "")
-				w.Flush()
+					fmt.Fprintln(w, "")
+					fmt.Fprintln(w, "")
+					w.Flush()
 
-				greeting.SetText(outbuf.String())
+					greeting.SetText(outbuf.String())
+				}
 			}
 		})
 		window.OnClosing(func(*ui.Window) bool {

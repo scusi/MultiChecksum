@@ -10,13 +10,12 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
-	"golang.org/x/crypto/sha3"
 	"fmt"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"github.com/zeebo/blake3"
+	"golang.org/x/crypto/sha3"
 	"io"
-	"io/ioutil"
 	"os"
 	"flag"
 )
@@ -44,11 +43,11 @@ func VersionInfo() {
 // takes a string (the filename of the file to read) as argument
 // returns a []byte (content of file) and error
 func loader(filename string) (content []byte, err error) {
-	// TODO: Reading content entierly into memory does not work in cases
+	// Reading content entirely into memory does not work in cases
 	// - where the content is larger than the available memory
 	// - when there is a restriction on maximum available memory for the process
-	// This could be overcome by streaming the content into the MultiWriter in func PrintSums
-	content, err = ioutil.ReadFile(filename)
+	// This could be overcome by streaming the content into the MultiWriter in func printSums
+	content, err = os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
@@ -58,12 +57,14 @@ func loader(filename string) (content []byte, err error) {
 // generate and print checksum for each file
 // takes a string (filename) as argument
 // prints different kinds of checksums for file
-func printSums(filename string) {
+func printSums(filename string) error {
 	// call 'loader' to load the file and return it's content as []byte
 	content, err := loader(filename)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error loading %s: %w", filename, err)
+	}
+	if len(content) == 0 {
+		return fmt.Errorf("empty file: %s", filename)
 	}
 	// generate handles for all our kinds of checksums
 	md5 := md5.New()
@@ -92,6 +93,7 @@ func printSums(filename string) {
 	fmt.Printf("Blake2b5   (%s): %x\n", filename, blake2b5.Sum(nil))
 	fmt.Printf("SHA512     (%s): %x\n", filename, sha512.Sum(nil))
 	fmt.Printf("SHA3-512   (%s): %x\n", filename, sha3512.Sum(nil))
+	return nil
 }
 
 func main() {
@@ -108,8 +110,15 @@ func main() {
 		fmt.Println("Number of Files given: ", len(args))
 	}
 	// iterate over arguments given and call printSums for each filename
+	hasError := false
 	for i := 0; i < len(args); i++ {
 		filename := args[i]
-		printSums(filename)
+		if err := printSums(filename); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			hasError = true
+		}
+	}
+	if hasError {
+		os.Exit(1)
 	}
 }

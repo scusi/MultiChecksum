@@ -3,10 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/scusi/MultiChecksum"
-	"io/ioutil"
+	"os"
 	"flag"
 	"log"
-	"os"
 )
 
 var (
@@ -38,24 +37,33 @@ func main() {
 	args := flag.Args()
 	if beVerbose {
 		log.Printf("flags: %v", args)
-	  	// print how many files we where given
-	  	fmt.Println("Number of Files given: ", len(args))
+		// print how many files we where given
+		fmt.Println("Number of Files given: ", len(args))
 	}
 	// iterate over arguments given and call printSums for each filename
+	hasError := false
 	for i := 0; i < len(args); i++ {
 		filename := args[i]
-		data, err := ioutil.ReadFile(filename)
+		data, err := os.ReadFile(filename)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Fprintf(os.Stderr, "Error reading %s: %v\n", filename, err)
+			hasError = true
+			continue
 		}
-		sum := multichecksum.CalcChecksums(filename, data)
+		sum, err := multichecksum.CalcChecksums(filename, data)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error calculating checksums for %s: %v\n", filename, err)
+			hasError = true
+			continue
+		}
 		fmt.Printf("Checksums for %s:\n", sum.Filename)
 		for _, h := range sum.Hashes {
 			fmt.Printf(" %s %s%s\t%x\n", sum.Filename, h.HashName, Spaces(7-len(h.HashName)), h.Hash)
 		}
-
 	}
-
+	if hasError {
+		os.Exit(1)
+	}
 }
 
 // Spaces produces a given number of space
