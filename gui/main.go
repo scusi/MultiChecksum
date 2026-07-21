@@ -75,7 +75,7 @@ func main() {
 		blake2b512Check.SetChecked(false)
 	})
 
-	// Result display
+	// Result display - use a label that we can update
 	resultLabel := widget.NewLabel("Checksums will appear here...")
 	resultLabel.Wrapping = fyne.TextWrapWord
 
@@ -117,6 +117,10 @@ func main() {
 			dialog.ShowError(fmt.Errorf("file does not exist: %s", filename), myWindow)
 			return
 		}
+
+		// Show loading state
+		resultLabel.SetText("Calculating checksums...")
+		resultLabel.Refresh()
 
 		// Load file
 		data, err := os.ReadFile(filename)
@@ -171,10 +175,12 @@ func main() {
 			}
 		}
 
-		// Update the UI label on the main thread
+		// Update the result label
 		resultLabel.SetText(result.String())
-		// Force a refresh of the label
 		resultLabel.Refresh()
+		
+		// Force a full window refresh to ensure the label updates
+		myWindow.Content().Refresh()
 	})
 
 	// Copy to clipboard button
