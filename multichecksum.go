@@ -21,6 +21,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
+	"errors"
 	"github.com/dchest/blake2b"
 	"github.com/dchest/blake2s"
 	"golang.org/x/crypto/sha3"
@@ -53,8 +54,13 @@ type Hashsum struct {
 	Hash     []byte
 }
 
-// CalcChecksums takes a filename and the file content and returns a map with the checksums
-func CalcChecksums(filename string, data []byte) *MultiChecksum {
+// CalcChecksums takes a filename and the file content and returns a MultiChecksum with the checksums.
+// Returns an error if the data is empty.
+func CalcChecksums(filename string, data []byte) (*MultiChecksum, error) {
+	if len(data) == 0 {
+		return nil, errors.New("empty file: " + filename)
+	}
+
 	// generate handles for all our kinds of checksums
 	md5 := md5.New()
 	sha1 := sha1.New()
@@ -74,7 +80,7 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 	msc := &MultiChecksum{
 		Filename: filename,
 		Hashes: []Hashsum{
-			Hashsum{HashName: "MD5",
+			{HashName: "MD5",
 				Hash: md5.Sum(nil)},
 			{HashName: "SHA1",
 				Hash: sha1.Sum(nil)},
@@ -92,9 +98,9 @@ func CalcChecksums(filename string, data []byte) *MultiChecksum {
 				Hash: sha512.Sum(nil)},
 			{HashName: "SHA3-512",
 				Hash: sha3512.Sum(nil)},
-			{HashName: "Blake5",
+			{HashName: "Blake2b-512",
 				Hash: blake2b5.Sum(nil)},
 		},
 	}
-	return msc
+	return msc, nil
 }
