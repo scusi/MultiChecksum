@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -90,7 +91,13 @@ func main() {
 			}
 			defer reader.Close()
 
-			fileEntry.SetText(reader.URI().Path())
+			// Convert URI path to absolute file path
+			filePath := reader.URI().Path()
+			// Remove leading "file://" if present
+			if strings.HasPrefix(filePath, "file://") {
+				filePath = strings.TrimPrefix(filePath, "file://")
+			}
+			fileEntry.SetText(filePath)
 		}, myWindow)
 	})
 
@@ -124,7 +131,7 @@ func main() {
 
 		// Build result string based on selected hashes
 		var result strings.Builder
-		result.WriteString(fmt.Sprintf("Checksums for: %s\n\n", filename))
+		result.WriteString(fmt.Sprintf("Checksums for: %s\n\n", filepath.Base(filename)))
 
 		// Helper function to check if a hash should be included
 		shouldInclude := func(hashName string) bool {
