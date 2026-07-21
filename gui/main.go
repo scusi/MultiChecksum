@@ -19,6 +19,7 @@ import (
 func main() {
 	myApp := app.NewWithID("github.com.scusi.MultiChecksum")
 	myWindow := myApp.NewWindow("MultiChecksum")
+	myWindow.Resize(fyne.NewSize(800, 600))
 
 	// Create UI elements
 	fileEntry := widget.NewEntry()
@@ -190,7 +191,7 @@ func main() {
 		dialog.ShowInformation("Success", "Checksums copied to clipboard!", myWindow)
 	})
 
-	// Layout
+	// Layout for file selection and hash options
 	fileRow := container.NewHBox(
 		fileEntry,
 		browseBtn,
@@ -217,18 +218,26 @@ func main() {
 		copyBtn,
 	)
 
-	// Main content
-	content := container.NewVBox(
+	// Control panel (top part)
+	controls := container.NewVBox(
 		widget.NewLabel("MultiChecksum - Calculate multiple checksums at once"),
 		widget.NewSeparator(),
 		fileRow,
 		hashGrid,
 		buttonRow,
 		widget.NewSeparator(),
-		container.NewScroll(resultText),
+	)
+
+	// Result panel (bottom part) - use HSplit to give it remaining space
+	resultScroll := container.NewScroll(resultText)
+
+	// Main layout - use a VBox with the controls and result
+	// The result scroll will expand to fill available space
+	content := container.NewVBox(
+		controls,
+		resultScroll,
 	)
 
 	myWindow.SetContent(content)
-	myWindow.Resize(fyne.NewSize(800, 600))
 	myWindow.ShowAndRun()
 }
