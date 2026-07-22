@@ -101,7 +101,7 @@ nfpms:
     package_name: multichecksum
     vendor: "scusi"
     homepage: "https://github.com/scusi/MultiChecksum"
-    maintainer: "Your Name <your.email@example.com>"
+    maintainer: "Florian Walther scusi@posteo.de"
     description: "A tool to check multiple checksums concurrently"
     license: "MIT"
     formats:
