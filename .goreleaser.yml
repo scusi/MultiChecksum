@@ -1,89 +1,104 @@
+version: 2
+
 builds:
- -  
-   id: MultiChecksumNL
-   ldflags:
-     - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
-   main: cmd/MultiChecksumNoLib/MultiChecksum.go
-   binary: MultiChecksumNL 
-   goos:
-    - darwin
-    - linux
-    - windows
-    - freebsd
-    - netbsd
-    - openbsd
-   goarch:
-    - amd64
-    - 386
-    - arm
-    - arm64
-   ignore:
-    - goos: openbsd
-      goarch: arm
-      goarm: 6
-    - goos: freebsd
-      goarch: arm
-      goarm: 6
-    - goos: darwin
-      goarch: 386
- -  
-   id: MultiChecksum
-   ldflags:
-     - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
-   main: cmd/MultiChecksum/Multichecksum.go
-   binary: MultiChecksum 
-   goos:
-    - darwin
-    - linux
-    - windows
-    - freebsd
-    - netbsd
-    - openbsd
-   goarch:
-    - amd64
-    - 386
-    - arm
-    - arm64
-   ignore:
-    - goos: openbsd
-      goarch: arm
-      goarm: 6
-    - goos: freebsd
-      goarch: arm
-      goarm: 6
-    - goos: darwin
-      goarch: 386
- -  
-   id: MultiChecksumBigData
-   ldflags:
-     - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
-   main: cmd/MultiChecksumBigData/main.go
-   binary: MultiChecksumBigData
-   goos:
-    - darwin
-    - linux
-    - windows
-    - freebsd
-    - netbsd
-    - openbsd
-   goarch:
-    - amd64
-    - 386
-    - arm
-    - arm64
-   ignore:
-    - goos: openbsd
-      goarch: arm
-      goarm: 6
-    - goos: freebsd
-      goarch: arm
-      goarm: 6
-    - goos: darwin
-      goarch: 386
+  - id: MultiChecksumNL
+    ldflags:
+      - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
+    main: cmd/MultiChecksumNoLib/MultiChecksum.go
+    binary: MultiChecksumNL 
+    goos:
+      - darwin
+      - linux
+      - windows
+      - freebsd
+      - netbsd
+      - openbsd
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    ignore:
+      - goos: openbsd
+        goarch: arm
+        goarm: 6
+      - goos: freebsd
+        goarch: arm
+        goarm: 6
+      - goos: darwin
+        goarch: 386
+  - id: MultiChecksum
+    ldflags:
+      - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
+    main: cmd/MultiChecksum/Multichecksum.go
+    binary: MultiChecksum 
+    goos:
+      - darwin
+      - linux
+      - windows
+      - freebsd
+      - netbsd
+      - openbsd
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    ignore:
+      - goos: openbsd
+        goarch: arm
+        goarm: 6
+      - goos: freebsd
+        goarch: arm
+        goarm: 6
+      - goos: darwin
+        goarch: 386
+  - id: MultiChecksumBigData
+    ldflags:
+      - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
+    main: cmd/MultiChecksumBigData/main.go
+    binary: MultiChecksumBigData
+    goos:
+      - darwin
+      - linux
+      - windows
+      - freebsd
+      - netbsd
+      - openbsd
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    ignore:
+      - goos: openbsd
+        goarch: arm
+        goarm: 6
+      - goos: freebsd
+        goarch: arm
+        goarm: 6
+      - goos: darwin
+        goarch: 386
+  - id: MultiChecksumGUI
+    env:
+      - CGO_ENABLED=1
+      # Setzt den Windows-Compiler dynamisch, falls das Ziel Windows ist:
+      - "{{- if eq .Os \"windows\" }}CC=x86_64-w64-mingw32-gcc{{- end }}"
+    ldflags:
+      - -s -w -X "main.version={{.Version}}" -X "main.commit={{.ShortCommit}}" -X "main.date={{.Date}}" -X "main.builtBy=goreleaser"
+      - "{{ if eq .Os \"windows\" }}-H windowsgui{{ end }}"
+    main: cmd/MultiChecksumGUI/main.go
+    binary: MultiChecksumGUI
+    goos:
+      - linux
+      - windows
+    goarch:
+      - amd64
+
 archives:
-  -
-    name_template: "{{.Os}}-{{.Arch}}-{{ .ProjectName }}"
+  - name_template: "{{.Os}}-{{.Arch}}-{{ .ProjectName }}"
     format: tar.gz
+    allow_different_binary_count: true
     format_overrides:
       - goos: windows
         format: zip
