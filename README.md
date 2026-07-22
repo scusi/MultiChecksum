@@ -69,13 +69,13 @@ The BigData variant is different from the above variants in the following ways:
 
 ## Fetch
 
-```
+```bash
 go get github.com/scusi/MultiChecksum
 ```
 
 ## Install
 
-```
+```bash
 # Install the lib
 cd ${GOPATH}/src/github.com/scusi/MultiChecksum
 go install
@@ -89,6 +89,6 @@ go install MultiChecksum.go
 
 After installing the commandline app you should be able to execute
 
-```
+```bash
 MultiChecksum file1.bin file2.bin anotherFile.doc
 ```
