@@ -12,6 +12,7 @@ There are different variants available, the key differences are described below.
 
 There is a GUI Variant for Windows and Linux. For windows there is also a Installer released (`MultiChecksumGUI_Setup.exe`).
 
+![Screenshot GUI Variant](./gui.png)
 
 ### Library Variant
 
