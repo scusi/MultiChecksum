@@ -79,6 +79,7 @@ builds:
         goarm: 6
       - goos: darwin
         goarch: 386
+
   - id: MultiChecksumGUI
     env:
       - CGO_ENABLED=1
