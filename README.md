@@ -1,17 +1,22 @@
 MultiChecksum
 =============
 
-MultiChecksum is a go module and a commandline application to generate 
+MultiChecksum is a go module and a commandline application to generate
 multiple cryptographic checksums at once for a given set of files.
 
 ## Variants
 
 There are different variants available, the key differences are described below.
 
+## GUI Variant
+
+There is a GUI Variant for Windows and Linux. For windows there is also a Installer released (`MultiChecksumGUI_Setup.exe`).
+
+
 ### Library Variant
 
 
-There is a very simple library called `multichecksum`. It consists out of one 
+There is a very simple library called `multichecksum`. It consists out of one
 function and one type.
 
 ```
@@ -23,7 +28,7 @@ func CalcChecksums(filename string, data []byte) *Checksums {
     [...] }
 ```
 
-The [command line tool](cmd/MultiChecksum/MultiChecksum.go) makes use of that 
+The [command line tool](cmd/MultiChecksum/MultiChecksum.go) makes use of that
 library as you can see in the following listing:
 
 ```
@@ -75,5 +80,3 @@ After installing the commandline app you should be able to execute
 ```
 MultiChecksum file1.bin file2.bin anotherFile.doc
 ```
-
-
