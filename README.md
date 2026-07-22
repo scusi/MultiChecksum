@@ -22,16 +22,16 @@ All variants can be downloadedaspre compiled binaries from the [release page](ht
 
 ## GUI Variant
 
-There is a GUI Variant for Windows and Linux. For Windows there is also a Installer released ([MultiChecksumGUI_Setup.exe](https://github.com/scusi/MultiChecksum/releases/download/latest)).
+There is a GUI Variant for Windows and Linux. For Windows there is also a Installer released ([MultiChecksumGUI_Setup.exe](https://github.com/scusi/MultiChecksum/releases/latest)).
 For Linux there is a deb package released, which contains the cli and gui variant. Install the deb package with `dpkg -i ~/Downloads/multichecksum_0.9.3-linux_amd64.deb`.
 
 ![Screenshot GUI Variant](./gui.png)
 
 ### Library Variant
 
-
-There is a very simple library called `multichecksum`. It consists out of one
-function and one type.
+There is a very simple library called `multichecksum`. 
+The library you can use inyour own tools likedescribed below.
+It consists out of one function and one type.
 
 ```go
 // Checksums is a map that holds filename and checksums for that file
@@ -59,7 +59,7 @@ library as you can see in the following listing:
 The stand alone variant is under `cmd/MultiChecksumNoLib/`. This is a
 command line tool that does the job, no library required.
 
-This is basically the first version of MultiChecksum
+This is basically the original (first) version of MultiChecksum.
 
 ### BigData Variant
 
