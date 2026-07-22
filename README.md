@@ -22,7 +22,7 @@ All variants can be downloadedaspre compiled binaries from the [release page](ht
 
 ## GUI Variant
 
-There is a GUI Variant for Windows and Linux. For windows there is also a Installer released (`MultiChecksumGUI_Setup.exe`).
+There is a GUI Variant for Windows and Linux. For windows there is also a Installer released ([MultiChecksumGUI_Setup.exe](https://github.com/scusi/MultiChecksum/releases/download/latest/MultiChecksumGUI_Setup.exe)).
 
 ![Screenshot GUI Variant](./gui.png)
 
