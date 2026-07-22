@@ -18,6 +18,7 @@ MultiChecksum supports the following Algorithms:
 ## Variants
 
 There are different variants available, the key differences are described below.
+All variants can be downloadedaspre compiled binaries from the [release page](https://github.com/scusi/MultiChecksum/releases/latest).
 
 ## GUI Variant
 
