@@ -1,7 +1,7 @@
 MultiChecksum
 =============
 
-MultiChecksum is a go module and a commandline application and a GUIApp (for Linux andWindows only) to generate
+MultiChecksum is a go module, a commandline application and a GUI application (currently for Linux and Windows only) to generate
 multiple cryptographic checksums at once for a given set of files.
 
 MultiChecksum supports the following Algorithms:
@@ -18,7 +18,7 @@ MultiChecksum supports the following Algorithms:
 ## Variants
 
 There are different variants available, the key differences are described below.
-All variants can be downloadedaspre compiled binaries from the [release page](https://github.com/scusi/MultiChecksum/releases/latest).
+All variants can be downloaded as pre-compiled binaries from the [release page](https://github.com/scusi/MultiChecksum/releases/latest).
 
 ## GUI Variant
 
